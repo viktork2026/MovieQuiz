@@ -116,7 +116,7 @@ final class MovieQuizViewController: UIViewController {
     }
 
     private func hideAnswerResult() {
-        previewImage.layer.borderColor = nil
+        previewImage.layer.borderColor = UIColor.clear.cgColor
     }
 
     private func disableButtons() {

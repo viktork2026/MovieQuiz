@@ -107,7 +107,7 @@ final class MovieQuizViewController: UIViewController {
         }
         alert.addAction(playAgain)
 
-        self.present(alert, animated: true, completion: nil)
+        present(alert, animated: true, completion: nil)
     }
 
     private func showAnswerResult(isCorrect: Bool) {
@@ -131,8 +131,8 @@ final class MovieQuizViewController: UIViewController {
 
     // MARK: - Business Logic
     private func startNewQuiz() {
-        self.currentQuestionIndex = 0
-        self.correctAnswersCount = 0
+        currentQuestionIndex = 0
+        correctAnswersCount = 0
 
         showQuizStep()
     }

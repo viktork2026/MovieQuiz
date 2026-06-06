@@ -150,7 +150,9 @@ final class MovieQuizViewController: UIViewController {
                 text:
                     "Ваш результат: \(correctAnswersCount)/\(questions.count)",
                 buttonText: "Сыграть еще раз",
-                buttonHandler: startNewQuiz,
+                buttonHandler: { [weak self] in
+                    self?.startNewQuiz()
+                },
             )
             show(result: result)
         } else {
@@ -171,7 +173,9 @@ final class MovieQuizViewController: UIViewController {
 
         showAnswerResult(isCorrect: isCorrect)
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
+            guard let self else { return }
+
             self.hideAnswerResult()
             self.showNextQuestionOrResults()
             self.enableButtons()

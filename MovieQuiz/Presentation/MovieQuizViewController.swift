@@ -10,7 +10,7 @@ final class MovieQuizViewController: UIViewController {
 
     // MARK: - Private properties
     private let questionCount: Int = 10
-    private let questionFactory: QuestionFactory = .init()
+    private let questionFactory: QuestionFactory = MockQuestionFactory()
 
     private var currentQuestion: QuizQuestion?
     private var currentQuestionIndex: Int = 1

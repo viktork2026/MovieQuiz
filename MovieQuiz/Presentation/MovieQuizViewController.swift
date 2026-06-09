@@ -9,60 +9,12 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet private weak var yesButton: UIButton!
 
     // MARK: - Private properties
-    private let questions: [QuizQuestion] = [
-        .init(
-            imageName: "The Godfather",
-            text: "Рейтинг этого фильма больше чем 6?",
-            correctAnswer: true
-        ),
-        .init(
-            imageName: "The Dark Knight",
-            text: "Рейтинг этого фильма больше чем 6?",
-            correctAnswer: true
-        ),
-        .init(
-            imageName: "Kill Bill",
-            text: "Рейтинг этого фильма больше чем 6?",
-            correctAnswer: true
-        ),
-        .init(
-            imageName: "The Avengers",
-            text: "Рейтинг этого фильма больше чем 6?",
-            correctAnswer: true
-        ),
-        .init(
-            imageName: "Deadpool",
-            text: "Рейтинг этого фильма больше чем 6?",
-            correctAnswer: true
-        ),
-        .init(
-            imageName: "The Green Knight",
-            text: "Рейтинг этого фильма больше чем 6?",
-            correctAnswer: true
-        ),
-        .init(
-            imageName: "Old",
-            text: "Рейтинг этого фильма больше чем 6?",
-            correctAnswer: false
-        ),
-        .init(
-            imageName: "The Ice Age Adventures of Buck Wild",
-            text: "Рейтинг этого фильма больше чем 6?",
-            correctAnswer: false
-        ),
-        .init(
-            imageName: "Tesla",
-            text: "Рейтинг этого фильма больше чем 6?",
-            correctAnswer: false
-        ),
-        .init(
-            imageName: "Vivarium",
-            text: "Рейтинг этого фильма больше чем 6?",
-            correctAnswer: false
-        ),
-    ]
-    private var currentQuestionIndex: Int = 0
-    private var correctAnswersCount: Int = 0
+    private let questionCount: Int = 10
+    private let questionFactory: QuestionFactory = .init()
+
+    private var currentQuestion: QuizQuestion?
+    private var currentQuestionIndex: Int = 1
+    private var correctAnswerCount: Int = 0
 
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -131,24 +83,27 @@ final class MovieQuizViewController: UIViewController {
 
     // MARK: - Business Logic
     private func startNewQuiz() {
-        currentQuestionIndex = 0
-        correctAnswersCount = 0
+        currentQuestion = nil
+        currentQuestionIndex = 1
+        correctAnswerCount = 0
 
         showQuizStep()
     }
 
     private func showQuizStep() {
-        let currentQuestion = questions[currentQuestionIndex]
-        let quizStep = convert(model: currentQuestion)
-        show(step: quizStep)
+        if let question = questionFactory.requestNextQuestion() {
+            currentQuestion = question
+            let quizStep = convert(model: question)
+            show(step: quizStep)
+        }
     }
 
     private func showNextQuestionOrResults() {
-        if currentQuestionIndex == questions.count - 1 {
+        if currentQuestionIndex == questionCount {
             let result = QuizResultsViewModel(
                 title: "Этот раунд окончен!",
                 text:
-                    "Ваш результат: \(correctAnswersCount)/\(questions.count)",
+                    "Ваш результат: \(correctAnswerCount)/\(questionCount)",
                 buttonText: "Сыграть еще раз",
                 buttonHandler: { [weak self] in
                     self?.startNewQuiz()
@@ -162,13 +117,16 @@ final class MovieQuizViewController: UIViewController {
     }
 
     private func handleAnswer(_ userAnswer: Bool) {
+        guard let currentQuestion else {
+            return
+        }
+
         disableButtons()
 
-        let currentQuestion = questions[currentQuestionIndex]
         let isCorrect = userAnswer == currentQuestion.correctAnswer
 
         if isCorrect {
-            correctAnswersCount += 1
+            correctAnswerCount += 1
         }
 
         showAnswerResult(isCorrect: isCorrect)
@@ -187,26 +145,7 @@ final class MovieQuizViewController: UIViewController {
         .init(
             image: UIImage(named: model.imageName) ?? UIImage(),
             question: model.text,
-            questionNumber: "\(currentQuestionIndex + 1)/\(questions.count)"
+            questionNumber: "\(currentQuestionIndex)/\(questionCount)"
         )
     }
-}
-
-private struct QuizQuestion {
-    let imageName: String
-    let text: String
-    let correctAnswer: Bool
-}
-
-private struct QuizStepViewModel {
-    let image: UIImage
-    let question: String
-    let questionNumber: String
-}
-
-private struct QuizResultsViewModel {
-    let title: String
-    let text: String
-    let buttonText: String
-    let buttonHandler: () -> Void
 }

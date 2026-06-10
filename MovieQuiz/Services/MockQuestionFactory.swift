@@ -5,8 +5,8 @@
 //  Created by Viktor Kim on 08.06.2026.
 //
 
-class MockQuestionFactory: QuestionFactory {
-    weak var delegate: QuestionFactoryDelegate?
+final class MockQuestionFactory: QuestionFactory {
+    private weak var delegate: QuestionFactoryDelegate?
 
     init(delegate: QuestionFactoryDelegate?) {
         self.delegate = delegate

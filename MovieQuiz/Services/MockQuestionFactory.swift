@@ -6,6 +6,12 @@
 //
 
 class MockQuestionFactory: QuestionFactory {
+    weak var delegate: QuestionFactoryDelegate?
+
+    init(delegate: QuestionFactoryDelegate?) {
+        self.delegate = delegate
+    }
+
     private let questions: [QuizQuestion] = [
         .init(
             imageName: "The Godfather",
@@ -59,11 +65,8 @@ class MockQuestionFactory: QuestionFactory {
         ),
     ]
 
-    func requestNextQuestion() -> QuizQuestion? {
-        guard let index = (0..<questions.count).randomElement() else {
-            return nil
-        }
-
-        return questions[safe: index]
+    func requestNextQuestion() {
+        let question = questions.randomElement()
+        delegate?.didReceiveNextQuestion(question: question)
     }
 }

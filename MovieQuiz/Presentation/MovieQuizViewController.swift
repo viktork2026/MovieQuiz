@@ -1,6 +1,6 @@
 import UIKit
 
-final class MovieQuizViewController: UIViewController {
+final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     // MARK: - IBOutlet
     @IBOutlet private weak var indexLabel: UILabel!
     @IBOutlet private weak var previewImage: UIImageView!
@@ -10,7 +10,7 @@ final class MovieQuizViewController: UIViewController {
 
     // MARK: - Private properties
     private let questionCount: Int = 10
-    private let questionFactory: QuestionFactory = MockQuestionFactory()
+    private var questionFactory: QuestionFactory?
 
     private var currentQuestion: QuizQuestion?
     private var currentQuestionIndex: Int = 1
@@ -20,8 +20,24 @@ final class MovieQuizViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        questionFactory = MockQuestionFactory(delegate: self)
+
         setupAnswerResultView()
         startNewQuiz()
+    }
+
+    // MARK: - QuestionFactoryDelegate
+    func didReceiveNextQuestion(question: QuizQuestion?) {
+        guard let question else {
+            return
+        }
+
+        currentQuestion = question
+        let quizStep = convert(model: question)
+
+        DispatchQueue.main.async { [weak self] in
+            self?.show(step: quizStep)
+        }
     }
 
     // MARK: - IBAction
@@ -87,15 +103,7 @@ final class MovieQuizViewController: UIViewController {
         currentQuestionIndex = 1
         correctAnswerCount = 0
 
-        showQuizStep()
-    }
-
-    private func showQuizStep() {
-        if let question = questionFactory.requestNextQuestion() {
-            currentQuestion = question
-            let quizStep = convert(model: question)
-            show(step: quizStep)
-        }
+        questionFactory?.requestNextQuestion()
     }
 
     private func showNextQuestionOrResults() {
@@ -112,7 +120,7 @@ final class MovieQuizViewController: UIViewController {
             show(result: result)
         } else {
             currentQuestionIndex += 1
-            showQuizStep()
+            questionFactory?.requestNextQuestion()
         }
     }
 

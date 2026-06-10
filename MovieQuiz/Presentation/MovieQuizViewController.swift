@@ -9,6 +9,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     @IBOutlet private weak var yesButton: UIButton!
 
     // MARK: - Private properties
+    private var alertPresenter: AlertPresenter?
+
     private let questionCount: Int = 10
     private var questionFactory: QuestionFactory?
 
@@ -20,6 +22,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        alertPresenter = AlertPresenter(on: self)
         questionFactory = MockQuestionFactory(delegate: self)
 
         setupAnswerResultView()
@@ -63,19 +66,16 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
 
     private func show(result: QuizResultsViewModel) {
-        let alert = UIAlertController(
+        let alertConfiguration = AlertConfiguration(
             title: result.title,
             message: result.text,
-            preferredStyle: .alert
+            buttonText: result.buttonText,
+            completion: { [weak self] in
+                self?.startNewQuiz()
+            }
         )
 
-        let playAgain = UIAlertAction(title: result.buttonText, style: .default)
-        { _ in
-            result.buttonHandler()
-        }
-        alert.addAction(playAgain)
-
-        present(alert, animated: true, completion: nil)
+        alertPresenter?.show(with: alertConfiguration)
     }
 
     private func showAnswerResult(isCorrect: Bool) {
@@ -113,9 +113,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
                 text:
                     "Ваш результат: \(correctAnswerCount)/\(questionCount)",
                 buttonText: "Сыграть еще раз",
-                buttonHandler: { [weak self] in
-                    self?.startNewQuiz()
-                },
             )
             show(result: result)
         } else {

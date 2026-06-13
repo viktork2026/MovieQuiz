@@ -13,12 +13,12 @@ final class MovieQuizViewController: UIViewController {
     private let statisticService: StatisticService =
         UserDefaultsStatisticService()
 
-    private let questionCount: Int = 10
+    private let questionsCount: Int = 10
     private var questionFactory: QuestionFactory?
 
     private var currentQuestion: QuizQuestion?
     private var currentQuestionIndex: Int = 1
-    private var correctAnswerCount: Int = 0
+    private var correctAnswersCount: Int = 0
 
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -89,16 +89,16 @@ final class MovieQuizViewController: UIViewController {
     private func startNewQuiz() {
         currentQuestion = nil
         currentQuestionIndex = 1
-        correctAnswerCount = 0
+        correctAnswersCount = 0
 
         questionFactory?.requestNextQuestion()
     }
 
     private func showNextQuestionOrResults() {
-        if currentQuestionIndex == questionCount {
+        if currentQuestionIndex == questionsCount {
             let quizResult = QuizResult(
-                questionsCount: questionCount,
-                correctAnswersCount: correctAnswerCount,
+                questionsCount: questionsCount,
+                correctAnswersCount: correctAnswersCount,
                 date: Date()
             )
 
@@ -127,7 +127,7 @@ final class MovieQuizViewController: UIViewController {
         let isCorrect = userAnswer == currentQuestion.correctAnswer
 
         if isCorrect {
-            correctAnswerCount += 1
+            correctAnswersCount += 1
         }
 
         showAnswerResult(isCorrect: isCorrect)
@@ -146,7 +146,7 @@ final class MovieQuizViewController: UIViewController {
         .init(
             image: UIImage(named: model.imageName) ?? UIImage(),
             question: model.text,
-            questionNumber: "\(currentQuestionIndex)/\(questionCount)"
+            questionNumber: "\(currentQuestionIndex)/\(questionsCount)"
         )
     }
 }

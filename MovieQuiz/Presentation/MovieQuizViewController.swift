@@ -10,6 +10,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
 
     // MARK: - Private properties
     private var alertPresenter: AlertPresenter?
+    private let statisticService: StatisticService =
+        UserDefaultsStatisticService()
 
     private let questionCount: Int = 10
     private var questionFactory: QuestionFactory?
@@ -108,11 +110,19 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
 
     private func showNextQuestionOrResults() {
         if currentQuestionIndex == questionCount {
+            let quizResult = QuizResult(
+                questionsCount: questionCount,
+                correctAnswersCount: correctAnswerCount,
+                date: Date()
+            )
+
+            statisticService.store(result: quizResult)
+
             let result = QuizResultsViewModel(
                 title: "Этот раунд окончен!",
-                text:
-                    "Ваш результат: \(correctAnswerCount)/\(questionCount)",
-                buttonText: "Сыграть еще раз",
+                quizResult: quizResult,
+                statisticService: statisticService,
+                buttonText: "Сыграть еще раз"
             )
             show(result: result)
         } else {

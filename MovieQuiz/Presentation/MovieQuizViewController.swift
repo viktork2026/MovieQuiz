@@ -1,6 +1,6 @@
 import UIKit
 
-final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
+final class MovieQuizViewController: UIViewController {
     // MARK: - IBOutlet
     @IBOutlet private weak var indexLabel: UILabel!
     @IBOutlet private weak var previewImage: UIImageView!
@@ -29,20 +29,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
 
         setupAnswerResultView()
         startNewQuiz()
-    }
-
-    // MARK: - QuestionFactoryDelegate
-    func didReceiveNextQuestion(question: QuizQuestion?) {
-        guard let question else {
-            return
-        }
-
-        currentQuestion = question
-        let quizStep = convert(model: question)
-
-        DispatchQueue.main.async { [weak self] in
-            self?.show(step: quizStep)
-        }
     }
 
     // MARK: - IBAction
@@ -162,5 +148,20 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             question: model.text,
             questionNumber: "\(currentQuestionIndex)/\(questionCount)"
         )
+    }
+}
+
+extension MovieQuizViewController: QuestionFactoryDelegate {
+    func didReceiveNextQuestion(question: QuizQuestion?) {
+        guard let question else {
+            return
+        }
+
+        currentQuestion = question
+        let quizStep = convert(model: question)
+
+        DispatchQueue.main.async { [weak self] in
+            self?.show(step: quizStep)
+        }
     }
 }

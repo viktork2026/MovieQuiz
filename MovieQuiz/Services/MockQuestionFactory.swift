@@ -1,5 +1,5 @@
 //
-//  QuestionFactory.swift
+//  MockQuestionFactory.swift
 //  MovieQuiz
 //
 //  Created by Viktor Kim on 08.06.2026.

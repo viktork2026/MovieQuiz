@@ -1,5 +1,5 @@
 //
-//  GameResult.swift
+//  QuizResult.swift
 //  MovieQuiz
 //
 //  Created by Viktor Kim on 13.06.2026.

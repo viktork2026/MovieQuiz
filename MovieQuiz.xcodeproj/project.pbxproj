@@ -11,6 +11,7 @@
 		77199B402FBF1463001EBA5D /* YS Display-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 77199B3D2FBF1463001EBA5D /* YS Display-Bold.ttf */; };
 		77368CEF2FEDA8BF0032BF12 /* NetworkClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77368CEE2FEDA8BC0032BF12 /* NetworkClient.swift */; };
 		77368CF12FEDC22C0032BF12 /* MostPopularMovies.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77368CF02FEDC2250032BF12 /* MostPopularMovies.swift */; };
+		77368CF72FEDC6170032BF12 /* URL+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77368CF62FEDC60F0032BF12 /* URL+Extensions.swift */; };
 		776407F92FD95834009F4BC5 /* QuestionFactoryDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 776407F82FD95827009F4BC5 /* QuestionFactoryDelegate.swift */; };
 		776407FB2FD9C39E009F4BC5 /* AlertPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 776407FA2FD9C399009F4BC5 /* AlertPresenter.swift */; };
 		776407FF2FD9C525009F4BC5 /* AlertConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 776407FE2FD9C51F009F4BC5 /* AlertConfiguration.swift */; };
@@ -38,6 +39,7 @@
 		77199B3E2FBF1463001EBA5D /* YS Display-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "YS Display-Medium.ttf"; sourceTree = "<group>"; };
 		77368CEE2FEDA8BC0032BF12 /* NetworkClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkClient.swift; sourceTree = "<group>"; };
 		77368CF02FEDC2250032BF12 /* MostPopularMovies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MostPopularMovies.swift; sourceTree = "<group>"; };
+		77368CF62FEDC60F0032BF12 /* URL+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Extensions.swift"; sourceTree = "<group>"; };
 		776407F82FD95827009F4BC5 /* QuestionFactoryDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionFactoryDelegate.swift; sourceTree = "<group>"; };
 		776407FA2FD9C399009F4BC5 /* AlertPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertPresenter.swift; sourceTree = "<group>"; };
 		776407FE2FD9C51F009F4BC5 /* AlertConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertConfiguration.swift; sourceTree = "<group>"; };
@@ -170,6 +172,7 @@
 		ADF0CF75283FDAA10075F54D /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				77368CF62FEDC60F0032BF12 /* URL+Extensions.swift */,
 				AD5EE5DD284D7887003966EF /* UIColor+Extensions.swift */,
 				AD7AFA542836189F00399704 /* Array+Extensions.swift */,
 				AD77F5732857F8810062FB14 /* Date+Extensions.swift */,
@@ -251,6 +254,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				77368CF72FEDC6170032BF12 /* URL+Extensions.swift in Sources */,
 				AD5EE5DE284D7887003966EF /* UIColor+Extensions.swift in Sources */,
 				77368CF12FEDC22C0032BF12 /* MostPopularMovies.swift in Sources */,
 				AD7AFA552836189F00399704 /* Array+Extensions.swift in Sources */,

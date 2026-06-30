@@ -22,4 +22,22 @@ struct MostPopularMovie: Codable {
     let title: String
     let rating: String
     let imageURL: URL
+
+    var resizedImageURL: URL {
+        let imageURLString = imageURL
+            .absoluteString
+            .components(separatedBy: "._")
+            .first
+
+        guard
+            let imageURLString,
+            let resizedImageURL = URL(
+                string: imageURLString + "._V0_UX600_.jpg"
+            )
+        else {
+            return imageURL
+        }
+
+        return resizedImageURL
+    }
 }

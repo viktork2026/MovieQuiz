@@ -1,8 +1,9 @@
 {
-  "images" : [
+  "data" : [
     {
       "filename" : "Kill Bill.png",
-      "idiom" : "universal"
+      "idiom" : "universal",
+      "universal-type-identifier" : "public.png"
     }
   ],
   "info" : {

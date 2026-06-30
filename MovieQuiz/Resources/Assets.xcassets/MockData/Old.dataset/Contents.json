@@ -1,8 +1,9 @@
 {
-  "images" : [
+  "data" : [
     {
       "filename" : "Old.jpg",
-      "idiom" : "universal"
+      "idiom" : "universal",
+      "universal-type-identifier" : "public.jpeg"
     }
   ],
   "info" : {

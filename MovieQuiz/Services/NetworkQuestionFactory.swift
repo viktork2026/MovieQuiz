@@ -8,6 +8,8 @@
 import Foundation
 
 final class NetworkQuestionFactory: QuestionFactory {
+    private struct APIError: Error {}
+
     private let movieLoader: MovieLoader
     private weak var delegate: QuestionFactoryDelegate?
 
@@ -49,6 +51,12 @@ final class NetworkQuestionFactory: QuestionFactory {
 
                 switch result {
                 case .success(let movies):
+                    guard movies.errorMessage.isEmpty else {
+                        self.delegate?.didFailToLoadData(
+                            with: APIError()
+                        )
+                        return
+                    }
                     self.movies = movies.items
                     self.delegate?.didLoadData()
                 case .failure(let error):

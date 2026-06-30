@@ -145,6 +145,7 @@ final class MovieQuizViewController: UIViewController {
             show(result: result)
         } else {
             currentQuestionIndex += 1
+            showLoadingIndicator()
             questionFactory?.requestNextQuestion()
         }
     }
@@ -191,10 +192,11 @@ extension MovieQuizViewController: QuestionFactoryDelegate {
             return
         }
 
-        currentQuestion = question
         let quizStep = convert(model: question)
 
         DispatchQueue.main.async { [weak self] in
+            self?.hideLoadingIndicator()
+            self?.currentQuestion = question
             self?.show(step: quizStep)
         }
     }

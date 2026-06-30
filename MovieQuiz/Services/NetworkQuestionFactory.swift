@@ -35,11 +35,7 @@ final class NetworkQuestionFactory: QuestionFactory {
             )
 
             DispatchQueue.main.async { [weak self] in
-                guard let self else {
-                    return
-                }
-
-                self.delegate?.didReceiveNextQuestion(question: question)
+                self?.delegate?.didReceiveNextQuestion(question: question)
             }
         }.resume()
     }

@@ -28,7 +28,9 @@ final class NetworkQuestionFactory: QuestionFactory {
         let rating = Float(movie.rating) ?? 0
         let (text, correctAnswer) = generateRandomQuestion(with: rating)
 
-        URLSession.shared.dataTask(with: movie.resizedImageURL) { data, _, _ in
+        URLSession.shared.dataTask(with: movie.resizedImageURL) {
+            [weak self] data, _, _ in
+
             let imageData = data ?? Data()
             let question = QuizQuestion(
                 imageData: imageData,
@@ -36,32 +38,28 @@ final class NetworkQuestionFactory: QuestionFactory {
                 correctAnswer: correctAnswer
             )
 
-            DispatchQueue.main.async { [weak self] in
-                self?.delegate?.didReceiveNextQuestion(question: question)
-            }
+            self?.delegate?.didReceiveNextQuestion(question: question)
         }.resume()
     }
 
     func loadData() {
-        movieLoader.loadMovies { result in
-            DispatchQueue.main.async { [weak self] in
-                guard let self else {
+        movieLoader.loadMovies { [weak self] result in
+            guard let self else {
+                return
+            }
+
+            switch result {
+            case .success(let movies):
+                guard movies.errorMessage.isEmpty else {
+                    self.delegate?.didFailToLoadData(
+                        with: APIError()
+                    )
                     return
                 }
-
-                switch result {
-                case .success(let movies):
-                    guard movies.errorMessage.isEmpty else {
-                        self.delegate?.didFailToLoadData(
-                            with: APIError()
-                        )
-                        return
-                    }
-                    self.movies = movies.items
-                    self.delegate?.didLoadData()
-                case .failure(let error):
-                    self.delegate?.didFailToLoadData(with: error)
-                }
+                self.movies = movies.items
+                self.delegate?.didLoadData()
+            case .failure(let error):
+                self.delegate?.didFailToLoadData(with: error)
             }
         }
     }

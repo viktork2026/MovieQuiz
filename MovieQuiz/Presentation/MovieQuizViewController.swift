@@ -164,7 +164,9 @@ final class MovieQuizViewController: UIViewController {
         showAnswerResult(isCorrect: isCorrect)
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
-            guard let self else { return }
+            guard let self else {
+                return
+            }
 
             self.hideAnswerResult()
             self.showNextQuestionOrResults()
@@ -197,12 +199,16 @@ extension MovieQuizViewController: QuestionFactoryDelegate {
     }
 
     func didLoadData() {
-        hideLoadingIndicator()
-        startNewQuiz()
+        DispatchQueue.main.async { [weak self] in
+            self?.hideLoadingIndicator()
+            self?.startNewQuiz()
+        }
     }
 
     func didFailToLoadData(with error: Error) {
-        hideLoadingIndicator()
-        showNetworkError(message: error.localizedDescription)
+        DispatchQueue.main.async { [weak self] in
+            self?.hideLoadingIndicator()
+            self?.showNetworkError(message: error.localizedDescription)
+        }
     }
 }

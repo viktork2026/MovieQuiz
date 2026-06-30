@@ -29,6 +29,7 @@ final class MovieQuizViewController: UIViewController {
 
         questionFactory = NetworkQuestionFactory(
             movieLoader: NetworkMovieLoader(),
+            imageLoader: NetworkImageLoader(),
             delegate: self
         )
 

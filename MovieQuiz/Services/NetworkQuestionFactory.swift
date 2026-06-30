@@ -11,12 +11,18 @@ final class NetworkQuestionFactory: QuestionFactory {
     private struct APIError: Error {}
 
     private let movieLoader: MovieLoader
+    private let imageLoader: ImageLoader
     private weak var delegate: QuestionFactoryDelegate?
 
     private var movies: [MostPopularMovie] = []
 
-    init(movieLoader: MovieLoader, delegate: QuestionFactoryDelegate?) {
+    init(
+        movieLoader: MovieLoader,
+        imageLoader: ImageLoader,
+        delegate: QuestionFactoryDelegate?
+    ) {
         self.movieLoader = movieLoader
+        self.imageLoader = imageLoader
         self.delegate = delegate
     }
 
@@ -28,18 +34,25 @@ final class NetworkQuestionFactory: QuestionFactory {
         let rating = Float(movie.rating) ?? 0
         let (text, correctAnswer) = generateRandomQuestion(with: rating)
 
-        URLSession.shared.dataTask(with: movie.resizedImageURL) {
-            [weak self] data, _, _ in
+        imageLoader.loadImage(url: movie.resizedImageURL) {
+            [weak self] result in
 
-            let imageData = data ?? Data()
-            let question = QuizQuestion(
-                imageData: imageData,
-                text: text,
-                correctAnswer: correctAnswer
-            )
+            guard let self else {
+                return
+            }
 
-            self?.delegate?.didReceiveNextQuestion(question: question)
-        }.resume()
+            switch result {
+            case .success(let imageData):
+                let question = QuizQuestion(
+                    imageData: imageData,
+                    text: text,
+                    correctAnswer: correctAnswer
+                )
+                self.delegate?.didReceiveNextQuestion(question: question)
+            case .failure(let error):
+                self.delegate?.didFailToLoadData(with: error)
+            }
+        }
     }
 
     func loadData() {

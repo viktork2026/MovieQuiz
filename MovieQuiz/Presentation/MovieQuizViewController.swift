@@ -7,6 +7,7 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet private weak var questionLabel: UILabel!
     @IBOutlet private weak var noButton: UIButton!
     @IBOutlet private weak var yesButton: UIButton!
+    @IBOutlet private weak var loadingIndicator: UIActivityIndicatorView!
 
     // MARK: - Private properties
     private var alertPresenter: AlertPresenter?
@@ -25,10 +26,15 @@ final class MovieQuizViewController: UIViewController {
         super.viewDidLoad()
 
         alertPresenter = AlertPresenter(on: self)
-        questionFactory = MockQuestionFactory(delegate: self)
+
+        questionFactory = NetworkQuestionFactory(
+            movieLoader: NetworkMovieLoader(),
+            imageLoader: NetworkImageLoader(),
+            delegate: self
+        )
 
         setupAnswerResultView()
-        startNewQuiz()
+        loadData()
     }
 
     // MARK: - IBAction
@@ -85,7 +91,33 @@ final class MovieQuizViewController: UIViewController {
         yesButton.isUserInteractionEnabled = true
     }
 
+    private func showLoadingIndicator() {
+        loadingIndicator.startAnimating()
+    }
+
+    private func hideLoadingIndicator() {
+        loadingIndicator.stopAnimating()
+    }
+
+    private func showNetworkError(message: String) {
+        let alertConfiguration = AlertConfiguration(
+            title: "Что-то пошло не так(",
+            message: "Невозможно загрузить данные",
+            buttonText: "Попробовать еще раз",
+            completion: { [weak self] in
+                self?.loadData()
+            }
+        )
+
+        alertPresenter?.show(with: alertConfiguration)
+    }
+
     // MARK: - Business Logic
+    private func loadData() {
+        showLoadingIndicator()
+        questionFactory?.loadData()
+    }
+
     private func startNewQuiz() {
         currentQuestion = nil
         currentQuestionIndex = 1
@@ -113,6 +145,7 @@ final class MovieQuizViewController: UIViewController {
             show(result: result)
         } else {
             currentQuestionIndex += 1
+            showLoadingIndicator()
             questionFactory?.requestNextQuestion()
         }
     }
@@ -133,7 +166,9 @@ final class MovieQuizViewController: UIViewController {
         showAnswerResult(isCorrect: isCorrect)
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
-            guard let self else { return }
+            guard let self else {
+                return
+            }
 
             self.hideAnswerResult()
             self.showNextQuestionOrResults()
@@ -144,7 +179,7 @@ final class MovieQuizViewController: UIViewController {
     // MARK: - Helpers
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         .init(
-            image: UIImage(named: model.imageName) ?? UIImage(),
+            image: UIImage(data: model.imageData) ?? UIImage(),
             question: model.text,
             questionNumber: "\(currentQuestionIndex)/\(questionsCount)"
         )
@@ -157,11 +192,26 @@ extension MovieQuizViewController: QuestionFactoryDelegate {
             return
         }
 
-        currentQuestion = question
         let quizStep = convert(model: question)
 
         DispatchQueue.main.async { [weak self] in
+            self?.hideLoadingIndicator()
+            self?.currentQuestion = question
             self?.show(step: quizStep)
+        }
+    }
+
+    func didLoadData() {
+        DispatchQueue.main.async { [weak self] in
+            self?.hideLoadingIndicator()
+            self?.startNewQuiz()
+        }
+    }
+
+    func didFailToLoadData(with error: Error) {
+        DispatchQueue.main.async { [weak self] in
+            self?.hideLoadingIndicator()
+            self?.showNetworkError(message: error.localizedDescription)
         }
     }
 }

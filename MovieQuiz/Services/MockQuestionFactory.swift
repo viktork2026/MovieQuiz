@@ -5,6 +5,9 @@
 //  Created by Viktor Kim on 08.06.2026.
 //
 
+import Foundation
+import UIKit
+
 final class MockQuestionFactory: QuestionFactory {
     private weak var delegate: QuestionFactoryDelegate?
 
@@ -12,61 +15,77 @@ final class MockQuestionFactory: QuestionFactory {
         self.delegate = delegate
     }
 
-    private let questions: [QuizQuestion] = [
-        .init(
+    private let predefinedData = [
+        (
             imageName: "The Godfather",
             text: "Рейтинг этого фильма больше чем 6?",
             correctAnswer: true
         ),
-        .init(
+        (
             imageName: "The Dark Knight",
             text: "Рейтинг этого фильма больше чем 6?",
             correctAnswer: true
         ),
-        .init(
+        (
             imageName: "Kill Bill",
             text: "Рейтинг этого фильма больше чем 6?",
             correctAnswer: true
         ),
-        .init(
+        (
             imageName: "The Avengers",
             text: "Рейтинг этого фильма больше чем 6?",
             correctAnswer: true
         ),
-        .init(
+        (
             imageName: "Deadpool",
             text: "Рейтинг этого фильма больше чем 6?",
             correctAnswer: true
         ),
-        .init(
+        (
             imageName: "The Green Knight",
             text: "Рейтинг этого фильма больше чем 6?",
             correctAnswer: true
         ),
-        .init(
+        (
             imageName: "Old",
             text: "Рейтинг этого фильма больше чем 6?",
             correctAnswer: false
         ),
-        .init(
+        (
             imageName: "The Ice Age Adventures of Buck Wild",
             text: "Рейтинг этого фильма больше чем 6?",
             correctAnswer: false
         ),
-        .init(
+        (
             imageName: "Tesla",
             text: "Рейтинг этого фильма больше чем 6?",
             correctAnswer: false
         ),
-        .init(
+        (
             imageName: "Vivarium",
             text: "Рейтинг этого фильма больше чем 6?",
             correctAnswer: false
         ),
     ]
 
+    private var questions: [QuizQuestion] = []
+
     func requestNextQuestion() {
         let question = questions.randomElement()
         delegate?.didReceiveNextQuestion(question: question)
+    }
+
+    // Fast enough to be synchronous.
+    func loadData() {
+        questions = predefinedData.map { imageName, text, correctAnswer in
+            let imageData = NSDataAsset(name: imageName)?.data ?? Data()
+            return QuizQuestion(
+                imageData: imageData,
+                text: text,
+                correctAnswer: correctAnswer
+            )
+        }
+
+        delegate?.didLoadData()
     }
 }

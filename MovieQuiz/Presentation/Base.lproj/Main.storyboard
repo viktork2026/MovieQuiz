@@ -102,14 +102,20 @@
                                     </stackView>
                                 </subviews>
                             </stackView>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="5Rn-Sz-JwN">
+                                <rect key="frame" x="188.5" y="429.5" width="37" height="37"/>
+                                <color key="color" name="YP White"/>
+                            </activityIndicatorView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" name="YP Black"/>
                         <constraints>
+                            <constraint firstItem="5Rn-Sz-JwN" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="6lM-nd-cLy"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="P0O-84-GkY" secondAttribute="bottom" id="90S-Gw-WdC"/>
                             <constraint firstItem="P0O-84-GkY" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="Jn8-sR-2ib"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="P0O-84-GkY" secondAttribute="trailing" constant="20" id="Lzu-WD-unV"/>
                             <constraint firstItem="P0O-84-GkY" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="azc-Mh-L1c"/>
+                            <constraint firstItem="5Rn-Sz-JwN" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="dMB-ia-lLE"/>
                         </constraints>
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius ">
@@ -119,6 +125,7 @@
                     </view>
                     <connections>
                         <outlet property="indexLabel" destination="Tty-WS-gP8" id="NBM-ZM-8C3"/>
+                        <outlet property="loadingIndicator" destination="5Rn-Sz-JwN" id="lP0-q1-4K0"/>
                         <outlet property="noButton" destination="aMB-Ym-wCG" id="D38-yf-uaU"/>
                         <outlet property="previewImage" destination="8EE-Ul-ctM" id="Ugs-7M-spm"/>
                         <outlet property="questionLabel" destination="4iN-K5-33q" id="VIg-BH-8Hk"/>

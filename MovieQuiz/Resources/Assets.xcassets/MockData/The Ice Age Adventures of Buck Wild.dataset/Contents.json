@@ -1,8 +1,9 @@
 {
-  "images" : [
+  "data" : [
     {
       "filename" : "The Ice Age Adventures of Buck Wild.jpg",
-      "idiom" : "universal"
+      "idiom" : "universal",
+      "universal-type-identifier" : "public.jpeg"
     }
   ],
   "info" : {

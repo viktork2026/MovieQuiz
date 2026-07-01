@@ -1,8 +1,9 @@
 {
-  "images" : [
+  "data" : [
     {
       "filename" : "The Green Knight.jpg",
-      "idiom" : "universal"
+      "idiom" : "universal",
+      "universal-type-identifier" : "public.jpeg"
     }
   ],
   "info" : {

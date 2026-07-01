@@ -85,15 +85,26 @@ final class NetworkQuestionFactory: QuestionFactory {
             case less
         }
 
+        // We use 2 and 9 here to exclude questions like:
+        // - "lower than 1?"
+        // - "greater than 10?"
+        let lowerBound = max(
+            2,
+            Int(rating.rounded(.down)) - 1
+        )
+        let upperBound = min(
+            9,
+            Int(rating.rounded(.up)) + 1
+        )
+        let randomRating = Int.random(in: lowerBound...upperBound)
+
         switch QuestionType.allCases.randomElement()! {
         case .greater:
-            let randomRating = Int.random(in: 1...9)
             return (
                 "Рейтинг этого фильма больше чем \(randomRating)?",
                 rating > Float(randomRating)
             )
         case .less:
-            let randomRating = Int.random(in: 2...10)
             return (
                 "Рейтинг этого фильма меньше чем \(randomRating)?",
                 rating < Float(randomRating)

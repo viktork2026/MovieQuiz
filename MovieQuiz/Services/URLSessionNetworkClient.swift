@@ -6,7 +6,7 @@
 //
 import Foundation
 
-struct URLSessionNetworkClient {
+struct URLSessionNetworkClient: NetworkClient {
     private enum FetchError: Error {
         case badStatusCode
         case noData

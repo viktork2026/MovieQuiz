@@ -1,12 +1,12 @@
 //
-//  NetworkClient.swift
+//  URLSessionNetworkClient.swift
 //  MovieQuiz
 //
 //  Created by Viktor Kim on 25.06.2026.
 //
 import Foundation
 
-struct NetworkClient {
+struct URLSessionNetworkClient {
     private enum FetchError: Error {
         case badStatusCode
         case noData

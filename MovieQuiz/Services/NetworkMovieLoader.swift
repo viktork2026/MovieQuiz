@@ -14,7 +14,7 @@ protocol MovieLoader {
 }
 
 struct NetworkMovieLoader: MovieLoader {
-    private let networkClient: NetworkClient = .init()
+    private let networkClient: URLSessionNetworkClient = .init()
     private let mostPopularMoviesUrl: URL = .init(
         staticString: "https://tv-api.com/en/API/Top250Movies/k_zcuw1ytf"
     )

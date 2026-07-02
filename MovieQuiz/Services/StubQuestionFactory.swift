@@ -1,5 +1,5 @@
 //
-//  MockQuestionFactory.swift
+//  StubQuestionFactory.swift
 //  MovieQuiz
 //
 //  Created by Viktor Kim on 08.06.2026.
@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-final class MockQuestionFactory: QuestionFactory {
+final class StubQuestionFactory: QuestionFactory {
     private weak var delegate: QuestionFactoryDelegate?
 
     init(delegate: QuestionFactoryDelegate?) {

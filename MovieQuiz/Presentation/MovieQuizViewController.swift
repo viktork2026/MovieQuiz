@@ -28,7 +28,9 @@ final class MovieQuizViewController: UIViewController {
         alertPresenter = AlertPresenter(on: self)
 
         questionFactory = NetworkQuestionFactory(
-            movieLoader: NetworkMovieLoader(),
+            movieLoader: NetworkMovieLoader(
+                networkClient: URLSessionNetworkClient()
+            ),
             imageLoader: NetworkImageLoader(),
             delegate: self
         )

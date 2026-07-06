@@ -8,6 +8,7 @@
 import UIKit
 
 struct QuizStepViewModel {
+    let movieTitle: String
     let image: UIImage
     let question: String
     let questionNumber: String

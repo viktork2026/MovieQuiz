@@ -44,6 +44,7 @@ final class NetworkQuestionFactory: QuestionFactory {
             switch result {
             case .success(let imageData):
                 let question = QuizQuestion(
+                    movieTitle: movie.title,
                     imageData: imageData,
                     text: text,
                     correctAnswer: correctAnswer

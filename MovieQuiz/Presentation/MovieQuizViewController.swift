@@ -58,6 +58,7 @@ final class MovieQuizViewController: UIViewController {
     private func show(step: QuizStepViewModel) {
         indexLabel.text = step.questionNumber
         previewImage.image = step.image
+        previewImage.accessibilityIdentifier = step.movieTitle
         questionLabel.text = step.question
     }
 
@@ -181,6 +182,7 @@ final class MovieQuizViewController: UIViewController {
     // MARK: - Helpers
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         .init(
+            movieTitle: model.movieTitle,
             image: UIImage(data: model.imageData) ?? UIImage(),
             question: model.text,
             questionNumber: "\(currentQuestionIndex)/\(questionsCount)"

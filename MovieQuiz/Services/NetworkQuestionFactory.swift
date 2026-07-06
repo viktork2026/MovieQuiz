@@ -27,7 +27,7 @@ final class NetworkQuestionFactory: QuestionFactory {
     }
 
     func requestNextQuestion() {
-        guard let movie = movies.randomElement() else {
+        guard let movie = movies.popRandomElement() else {
             return
         }
 

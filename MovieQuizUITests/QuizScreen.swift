@@ -27,7 +27,7 @@ struct QuizScreen {
 
     func verifyQuestionIndexIs(index: String) {
         let expectation = XCTNSPredicateExpectation(
-            predicate: NSPredicate(format: "label == '\(index)'"),
+            predicate: NSPredicate(format: "label == %@", index),
             object: questionIndex
         )
 

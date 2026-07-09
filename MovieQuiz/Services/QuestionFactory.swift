@@ -6,6 +6,7 @@
 //
 
 protocol QuestionFactory {
+    func configure(with delegate: QuestionFactoryDelegate?)
     func requestNextQuestion()
     func loadData()
 }

@@ -12,7 +12,11 @@ protocol ImageLoader {
 }
 
 struct NetworkImageLoader: ImageLoader {
-    private let networkClient: NetworkClient = .init()
+    private let networkClient: NetworkClient
+
+    init(networkClient: NetworkClient) {
+        self.networkClient = networkClient
+    }
 
     func loadImage(url: URL, handler: @escaping (Result<Data, Error>) -> Void) {
         networkClient.fetch(url: url, handler: handler)

@@ -16,18 +16,17 @@ final class NetworkQuestionFactory: QuestionFactory {
 
     private var movies: [MostPopularMovie] = []
 
-    init(
-        movieLoader: MovieLoader,
-        imageLoader: ImageLoader,
-        delegate: QuestionFactoryDelegate?
-    ) {
+    init(movieLoader: MovieLoader, imageLoader: ImageLoader) {
         self.movieLoader = movieLoader
         self.imageLoader = imageLoader
+    }
+
+    func configure(with delegate: QuestionFactoryDelegate?) {
         self.delegate = delegate
     }
 
     func requestNextQuestion() {
-        guard let movie = movies.randomElement() else {
+        guard let movie = movies.popRandomElement() else {
             return
         }
 
@@ -44,6 +43,7 @@ final class NetworkQuestionFactory: QuestionFactory {
             switch result {
             case .success(let imageData):
                 let question = QuizQuestion(
+                    movieTitle: movie.title,
                     imageData: imageData,
                     text: text,
                     correctAnswer: correctAnswer

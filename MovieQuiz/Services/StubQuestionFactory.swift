@@ -1,5 +1,5 @@
 //
-//  MockQuestionFactory.swift
+//  StubQuestionFactory.swift
 //  MovieQuiz
 //
 //  Created by Viktor Kim on 08.06.2026.
@@ -8,61 +8,61 @@
 import Foundation
 import UIKit
 
-final class MockQuestionFactory: QuestionFactory {
+final class StubQuestionFactory: QuestionFactory {
     private weak var delegate: QuestionFactoryDelegate?
 
-    init(delegate: QuestionFactoryDelegate?) {
+    init(delegate: QuestionFactoryDelegate? = nil) {
         self.delegate = delegate
     }
 
     private let predefinedData = [
         (
-            imageName: "The Godfather",
+            movieTitle: "The Godfather",
             text: "Рейтинг этого фильма больше чем 6?",
             correctAnswer: true
         ),
         (
-            imageName: "The Dark Knight",
+            movieTitle: "The Dark Knight",
             text: "Рейтинг этого фильма больше чем 6?",
             correctAnswer: true
         ),
         (
-            imageName: "Kill Bill",
+            movieTitle: "Kill Bill",
             text: "Рейтинг этого фильма больше чем 6?",
             correctAnswer: true
         ),
         (
-            imageName: "The Avengers",
+            movieTitle: "The Avengers",
             text: "Рейтинг этого фильма больше чем 6?",
             correctAnswer: true
         ),
         (
-            imageName: "Deadpool",
+            movieTitle: "Deadpool",
             text: "Рейтинг этого фильма больше чем 6?",
             correctAnswer: true
         ),
         (
-            imageName: "The Green Knight",
+            movieTitle: "The Green Knight",
             text: "Рейтинг этого фильма больше чем 6?",
             correctAnswer: true
         ),
         (
-            imageName: "Old",
+            movieTitle: "Old",
             text: "Рейтинг этого фильма больше чем 6?",
             correctAnswer: false
         ),
         (
-            imageName: "The Ice Age Adventures of Buck Wild",
+            movieTitle: "The Ice Age Adventures of Buck Wild",
             text: "Рейтинг этого фильма больше чем 6?",
             correctAnswer: false
         ),
         (
-            imageName: "Tesla",
+            movieTitle: "Tesla",
             text: "Рейтинг этого фильма больше чем 6?",
             correctAnswer: false
         ),
         (
-            imageName: "Vivarium",
+            movieTitle: "Vivarium",
             text: "Рейтинг этого фильма больше чем 6?",
             correctAnswer: false
         ),
@@ -70,16 +70,21 @@ final class MockQuestionFactory: QuestionFactory {
 
     private var questions: [QuizQuestion] = []
 
+    func configure(with delegate: QuestionFactoryDelegate?) {
+        self.delegate = delegate
+    }
+
     func requestNextQuestion() {
-        let question = questions.randomElement()
+        let question = questions.popRandomElement()
         delegate?.didReceiveNextQuestion(question: question)
     }
 
     // Fast enough to be synchronous.
     func loadData() {
-        questions = predefinedData.map { imageName, text, correctAnswer in
-            let imageData = NSDataAsset(name: imageName)?.data ?? Data()
+        questions = predefinedData.map { movieTitle, text, correctAnswer in
+            let imageData = NSDataAsset(name: movieTitle)?.data ?? Data()
             return QuizQuestion(
+                movieTitle: movieTitle,
                 imageData: imageData,
                 text: text,
                 correctAnswer: correctAnswer

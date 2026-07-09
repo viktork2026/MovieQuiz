@@ -29,6 +29,7 @@ final class AlertPresenter {
         }
 
         alert.addAction(action)
+        alert.view.accessibilityIdentifier = "roundEndAlert"
 
         viewController?.present(alert, animated: true, completion: nil)
     }

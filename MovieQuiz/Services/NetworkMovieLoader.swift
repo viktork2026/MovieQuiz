@@ -14,10 +14,14 @@ protocol MovieLoader {
 }
 
 struct NetworkMovieLoader: MovieLoader {
-    private let networkClient: NetworkClient = .init()
     private let mostPopularMoviesUrl: URL = .init(
         staticString: "https://tv-api.com/en/API/Top250Movies/k_zcuw1ytf"
     )
+    private let networkClient: NetworkClient
+
+    init(networkClient: NetworkClient) {
+        self.networkClient = networkClient
+    }
 
     func loadMovies(
         handler: @escaping (Result<MostPopularMovies, Error>) -> Void

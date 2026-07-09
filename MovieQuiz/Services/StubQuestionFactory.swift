@@ -11,7 +11,7 @@ import UIKit
 final class StubQuestionFactory: QuestionFactory {
     private weak var delegate: QuestionFactoryDelegate?
 
-    init(delegate: QuestionFactoryDelegate?) {
+    init(delegate: QuestionFactoryDelegate? = nil) {
         self.delegate = delegate
     }
 
@@ -69,6 +69,10 @@ final class StubQuestionFactory: QuestionFactory {
     ]
 
     private var questions: [QuizQuestion] = []
+
+    func configure(with delegate: QuestionFactoryDelegate?) {
+        self.delegate = delegate
+    }
 
     func requestNextQuestion() {
         let question = questions.randomElement()

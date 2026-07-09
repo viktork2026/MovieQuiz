@@ -16,13 +16,12 @@ final class NetworkQuestionFactory: QuestionFactory {
 
     private var movies: [MostPopularMovie] = []
 
-    init(
-        movieLoader: MovieLoader,
-        imageLoader: ImageLoader,
-        delegate: QuestionFactoryDelegate?
-    ) {
+    init(movieLoader: MovieLoader, imageLoader: ImageLoader) {
         self.movieLoader = movieLoader
         self.imageLoader = imageLoader
+    }
+
+    func configure(with delegate: QuestionFactoryDelegate?) {
         self.delegate = delegate
     }
 

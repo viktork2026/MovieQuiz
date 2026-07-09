@@ -7,7 +7,7 @@
 
 import UIKit
 
-struct QuizStepViewData {
+struct QuizStepViewData: Equatable {
     let movieTitle: String
     let imageData: Data
     let question: String

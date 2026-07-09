@@ -36,12 +36,25 @@ struct QuizScreen {
     }
 
     func getPreviewImageIdentifier() -> String {
-        previewImage.identifier
+        let expectation = XCTNSPredicateExpectation(
+            predicate: NSPredicate(
+                format: "identifier.length > 0"
+            ),
+            object: previewImage
+        )
+
+        let result = XCTWaiter().wait(for: [expectation], timeout: timeout)
+        XCTAssertEqual(result, .completed)
+
+        return previewImage.identifier
     }
 
     func verifyPreviewImageChanged(from oldIdentifier: String) {
         let expectation = XCTNSPredicateExpectation(
-            predicate: NSPredicate(format: "identifier != %@", oldIdentifier),
+            predicate: NSPredicate(
+                format: "identifier != %@",
+                oldIdentifier
+            ),
             object: previewImage
         )
 
@@ -50,15 +63,21 @@ struct QuizScreen {
     }
 
     func tapNo() {
-        noButton.tap()
+        waitForEnabledAndTap(button: noButton)
     }
 
     func tapYes() {
-        yesButton.tap()
+        waitForEnabledAndTap(button: yesButton)
     }
 
     func tapPlayAgain() {
-        playAgainButton.tap()
+        let button = playAgainButton
+        guard button.waitForExistence(timeout: timeout) else {
+            XCTFail("Play again button doesn't exist")
+            return
+        }
+
+        button.tap()
     }
 
     func answerAllQuestions() {
@@ -84,5 +103,17 @@ struct QuizScreen {
 
         XCTAssertEqual(alert.label, "Этот раунд окончен!")
         XCTAssertEqual(playAgainButton.label, "Сыграть еще раз")
+    }
+
+    private func waitForEnabledAndTap(button: XCUIElement) {
+        let expectation = XCTNSPredicateExpectation(
+            predicate: NSPredicate(format: "isEnabled == true"),
+            object: button
+        )
+
+        let result = XCTWaiter().wait(for: [expectation], timeout: timeout)
+        XCTAssertEqual(result, .completed)
+
+        button.tap()
     }
 }

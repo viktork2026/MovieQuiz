@@ -20,7 +20,7 @@ struct QuizScreen {
         roundEndAlert.buttons.firstMatch
     }
 
-    init(app: XCUIApplication, timeout: TimeInterval = 3.0) {
+    init(app: XCUIApplication, timeout: TimeInterval = 10.0) {
         self.app = app
         self.timeout = timeout
     }

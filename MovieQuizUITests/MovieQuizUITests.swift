@@ -8,8 +8,8 @@
 import XCTest
 
 final class MovieQuizUITests: XCTestCase {
-    var app: XCUIApplication!
-    var screen: QuizScreen!
+    private var app: XCUIApplication!
+    private var screen: QuizScreen!
 
     override func setUpWithError() throws {
         try super.setUpWithError()

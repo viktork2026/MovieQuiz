@@ -10,10 +10,12 @@ import XCTest
 @testable import MovieQuiz
 
 final class MovieQuizPresenterTests: XCTestCase {
-    var viewController: MockMovieQuizViewController!
-    var presenter: MovieQuizPresenter!
+    private var viewController: MockMovieQuizViewController!
+    private var presenter: MovieQuizPresenter!
 
     override func setUp() {
+        super.setUp()
+
         viewController = MockMovieQuizViewController()
 
         presenter = MovieQuizPresenter(

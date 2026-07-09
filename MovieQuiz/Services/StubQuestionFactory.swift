@@ -75,7 +75,7 @@ final class StubQuestionFactory: QuestionFactory {
     }
 
     func requestNextQuestion() {
-        let question = questions.randomElement()
+        let question = questions.popRandomElement()
         delegate?.didReceiveNextQuestion(question: question)
     }
 
